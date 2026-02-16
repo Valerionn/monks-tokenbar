@@ -1,7 +1,7 @@
 {
-  "title": "Monk's TokenBar",
+  "title": "Monk's TokenBar [Fork - Valerionn]",
   "description": "Add a bar with all the current player tokens.  Limit movement, roll saving throws, assign XP.",
-  "version": "13.02",
+  "version": "13.02f",
   "authors": [
     {
       "name": "IronMonk",
@@ -86,10 +86,10 @@
   "styles": [
     "css/tokenbar.css"
   ],
-  "url": "https://github.com/ironmonk108/monks-tokenbar",
-  "download": "https://github.com/ironmonk108/monks-tokenbar/archive/13.02.zip",
-  "manifest": "https://github.com/ironmonk108/monks-tokenbar/releases/latest/download/module.json",
-  "bugs": "https://github.com/ironmonk108/monks-tokenbar/issues",
+  "url": "https://github.com/valerionn/monks-tokenbar",
+  "download": "https://github.com/valerionn/monks-tokenbar/archive/13.02f.zip",
+  "manifest": "https://github.com/valerionn/monks-tokenbar/releases/latest/download/module.json",
+  "bugs": "https://github.com/valerionn/monks-tokenbar/issues",
   "id": "monks-tokenbar",
   "compatibility": {
     "minimum": "13",
