@@ -24,6 +24,7 @@ import { SW5eRolls } from "./systems/sw5e-rolls.js";
 import { CoC7Rolls } from "./systems/coc7-rolls.js";
 import { T2K4ERolls } from "./systems/t2k4e-rolls.js";
 import { FBLRolls } from "./systems/fbl-rolls.js";
+import { SF2eRolls } from "./systems/sf2e-rolls.js";
 
 
 export let debug = (...args) => {
@@ -176,7 +177,7 @@ export class MonksTokenBar {
                 let token = fromUuidSync(msgToken.uuid);
                 let actor = token?.actor ? token.actor : token;
 
-                return game.system.id == "pf2e" && !!msgToken.roll && actor.type == "character" && actor.heroPoints.value > 0 && (game.user.isGM || actor.isOwner);
+                return ["pf2e", "sf2e"].includes(game.system.id) && !!msgToken.roll && actor.type == "character" && actor.heroPoints.value > 0 && (game.user.isGM || actor.isOwner);
 
                 //return game.user.isGM && !!message.flags.pf2e.context
                 //message.isRerollable && !!actor?.isOfType("character") && actor.heroPoints.value > 0
@@ -1248,6 +1249,8 @@ Hooks.on("setup", () => {
             MonksTokenBar.system = new PF1Rolls(); break;
         case 'pf2e':
             MonksTokenBar.system = new PF2eRolls(); break;
+        case 'sf2e':
+            MonksTokenBar.system = new SF2eRolls(); break;
         case 'tormenta20':
             MonksTokenBar.system = new Tormenta20Rolls(); break;
         case 'sfrpg':
@@ -1259,11 +1262,10 @@ Hooks.on("setup", () => {
         case 'coc7':
             MonksTokenBar.system = new CoC7Rolls(); break;
         case 't2k4e':
-            MonksTokenBar.system = new T2K4ERolls(); break;
-        case 'draw-steel':
+            MonksTokenBar.system = new T2K4ERolls(); break;case 'draw-steel':
             MonksTokenBar.system = new DrawSteelRolls(); break;
         case 'forbidden-lands':
-            MonksTokenBar.system = new FBLRolls(); break; 
+            MonksTokenBar.system = new FBLRolls(); break;
     }
 
     MonksTokenBar.system.constructor.activateHooks();
