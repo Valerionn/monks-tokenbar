@@ -127,7 +127,7 @@ export function getRollsForPf2eBasedSystem(systemName) {
       };
 
       xp = game.pf2e.gm.calculateXP(calcAPL, apl.count, npcLevels, hazardLevels, {
-        proficiencyWithoutLevel: game.settings.get('sf2e', 'proficiencyVariant') === 'ProficiencyWithoutLevel',
+        proficiencyWithoutLevel: game.settings.get(systemName, 'proficiencyVariant') === 'ProficiencyWithoutLevel',
       });
 
       return xp.xpPerPlayer;
@@ -190,7 +190,7 @@ export function getRollsForPf2eBasedSystem(systemName) {
         skipDialog: fastForward,
         rollMode,
         createMessage: false,
-        speaker: ChatMessage.getSpeaker({
+        speaker: foundry.documents.ChatMessage.implementation.getSpeaker({
           actor: actor
         })
       };
@@ -215,9 +215,11 @@ export function getRollsForPf2eBasedSystem(systemName) {
         let lore = actor.items.find(i => { return i.type == request.type && MonksTokenBar.slugify(i.name) == request.key; });
         if (lore != undefined) {
           let slug = lore.name.slugify();
+          if (!slug.endsWith("-lore"))
+            slug = slug + "-lore";
           //opts = actor.getRollOptions(["all", "skill-check", slug]);
-          rollfn = actor.skills[slug].check.roll;
-          actor = actor.skills[slug].check;
+          rollfn = actor.skills[slug]?.check?.roll;
+          actor = actor.skills[slug]?.check;
         } else
           return { id: id, error: true, msg: i18n("MonksTokenBar.ActorNoLore") };
       }
@@ -251,10 +253,10 @@ export function getRollsForPf2eBasedSystem(systemName) {
       if (setting("send-levelup-whisper") && game.user.isTheGM && actor.system.details.xp.value >= actor.system.details.xp.max) {
         const level = parseInt(foundry.utils.getProperty(actor, "system.details.level.value")) + 1;
         const html = await foundry.applications.handlebars.renderTemplate("./modules/monks-tokenbar/templates/levelup.html", { level: level, name: actor.name, xp: actor.system.details.xp.value });
-        ChatMessage.create({
+        foundry.documents.ChatMessage.implementation.create({
           user: game.user.id,
           content: html,
-          whisper: ChatMessage.getWhisperRecipients(actor.name),
+          whisper: foundry.documents.ChatMessage.implementation.getWhisperRecipients(actor.name),
           flags: {
             "monks-tokenbar": { level: level, actor: actor.uuid }
           }
